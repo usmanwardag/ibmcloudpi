@@ -6,7 +6,6 @@ import uuid
 
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BOARD)
-GPIO.setup(16, GPIO.IN)
 GPIO.setup(18, GPIO.OUT)
 
 client = None
@@ -33,8 +32,8 @@ try:
     client.deviceEventCallback = lightEventCallback
 
     while True:
-        eventData = {'buttonPushed' : True}
-        client.publishEvent(typeId="RaspberryPi", deviceId="1", eventId="buttonPress", msgFormat="json", data=eventData, onPublish=publishEventCallback)
+        eventData = {'Test' : True}
+        client.publishEvent(typeId="RaspberryPi", deviceId="1", eventId="RegularUpdate", msgFormat="json", data=eventData, onPublish=publishEventCallback)
         time.sleep(5)
 except Exception as e:
     print("Exception: ", e)
