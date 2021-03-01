@@ -5,6 +5,7 @@ https://github.com/IBM-Cloud/get-started-python
 You'll need the following:
 * [IBM Cloud account](https://console.ng.bluemix.net/registration/)
 * [Cloud Foundry CLI](https://github.com/cloudfoundry/cli#downloads)
+* [IBM Cloud CLI](https://cloud.ibm.com/docs/cli?topic=cli-install-ibmcloud-cli)
 * [Git](https://git-scm.com/downloads)
 * [Python](https://www.python.org/downloads/)
 
