@@ -1,4 +1,5 @@
 import time
+import wiotp.sdk.application
 
 # Import the ADS1x15 module.
 import Adafruit_ADS1x15
@@ -56,9 +57,18 @@ def get_ph():
 
     return ph_adc, ph
 
+def publishAccCallback():
+    print("pH Published.")
+
 
 if __name__ == '__main__':
+
+    options = wiotp.sdk.application.parseConfigFile("application.yaml")
+    client = wiotp.sdk.application.ApplicationClient(config=options)
+    client.connect()
+
     while True:
         _, pH = get_ph()
         print(f'Current pH: {pH}')
+        client.publishEvent(typeId="RaspberryPi", deviceId="1", eventId="ph", msgFormat="json", data={'ph': pH}, onPublish=publishAccCallback)
         time.sleep(0.5)

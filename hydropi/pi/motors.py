@@ -1,7 +1,10 @@
 
+import json
 import RPi.GPIO as GPIO 
 from time import time, sleep
 from read_ph import get_ph 
+
+GPIO.setwarnings(False)
 
 rotation_1_pin = 7
 rotation_2_pin = 12
@@ -16,11 +19,6 @@ GPIO.setup(pwm_motor2_pin, GPIO.OUT)
 
 GPIO.output(pwm_motor1_pin, False)
 GPIO.output(pwm_motor2_pin, False)
-
-DESIRED_PH_LOWER = 5.8
-DESIRED_PH_UPPER = 6.5
-WAIT_TIME = 30
-PUMP_DURATION = 0.2
 
 
 def set_rotation(direction='counter_clockwise'):
@@ -53,24 +51,38 @@ def run_motor(motor, duration, direction='counter_clockwise'):
     GPIO.cleanup()
 
 
-def adjust_ph(ph_low=DESIRED_PH_LOWER, ph_high=DESIRED_PH_UPPER):
+def adjust_ph():
     
     # Motor 1 -> Acid, Motor 2 -> Base
 
     while True:
+
+        # Read the latest config variables
+        with open('config.json') as f:
+            config = json.load(f)
+
+            DESIRED_PH_LOWER = float(config['DESIRED_PH_LOWER'])
+            DESIRED_PH_UPPER = float(config['DESIRED_PH_UPPER'])
+            WAIT_TIME = float(config['WAIT_TIME'])
+            PUMP_DURATION = float(config['PUMP_DURATION'])
+
+        config['RUNNING'] = 'T'
+
+        print(f'Lower pH Bound: {DESIRED_PH_LOWER}, Upper pH Bound: {DESIRED_PH_UPPER}, Wait: {WAIT_TIME}s, Pump Duration: {PUMP_DURATION}')
+
         _, ph = get_ph()
         print(f'Current PH: {ph}')
 
-        if ph > ph_low and ph < ph_high:
+        if ph > DESIRED_PH_LOWER and ph < DESIRED_PH_UPPER:
             print('PH is within desired limits.')
             break
 
-        elif ph < ph_low:
+        elif ph < DESIRED_PH_LOWER:
             # Run motor 2, which controls base
             print('Running motor 2, which controls base (to increase pH).')
             run_motor(motor=2, duration=PUMP_DURATION)
 
-        elif ph > ph_high:
+        elif ph > DESIRED_PH_UPPER:
             # Run motor 1, which controls base
             print('Running motor 1, which controls acid (to decrease pH).')
             run_motor(motor=1, duration=PUMP_DURATION)
@@ -83,21 +95,47 @@ def adjust_ph(ph_low=DESIRED_PH_LOWER, ph_high=DESIRED_PH_UPPER):
         GPIO.output(pwm_motor1_pin, False)
         GPIO.output(pwm_motor2_pin, False)
 
+        with open("config.json", "w") as f:
+            json.dump(config, f)
+
         # Wait for 30 seconds for readings to become stable
         print(f'Sleeping for {WAIT_TIME} seconds')
         sleep(WAIT_TIME)
-        
-        
 
+    config['RUNNING'] = 'F'    
+    with open("config.json", "w") as f:
+        json.dump(config, f)
 
-    #run_motor(motor=2, duration=10)
-
-adjust_ph()
-
+# Need to do this again because the earlier scope doesn't remain valid.
 GPIO.setmode(GPIO.BOARD)
 GPIO.setup(pwm_motor1_pin, GPIO.OUT)
 GPIO.setup(pwm_motor2_pin, GPIO.OUT)
 GPIO.output(pwm_motor1_pin, False)
 GPIO.output(pwm_motor2_pin, False)
+
+
+if __name__ == '__main__':
+
+    # Read the latest config variables
+    with open('config.json') as f:
+        config = json.load(f)
+
+        DESIRED_PH_LOWER = float(config['DESIRED_PH_LOWER'])
+        DESIRED_PH_UPPER = float(config['DESIRED_PH_UPPER'])
+        WAIT_TIME = float(config['WAIT_TIME'])
+        PUMP_DURATION = float(config['PUMP_DURATION'])
+
+    print(f'Lower pH Bound: {DESIRED_PH_LOWER}, Upper pH Bound: {DESIRED_PH_UPPER}, Wait: {WAIT_TIME}s, Pump Duration: {PUMP_DURATION}')
+
+    run_motor(motor=1, duration=PUMP_DURATION)
+
+    # Need to do this again because the earlier scope doesn't remain valid.
+    GPIO.setmode(GPIO.BOARD)
+    GPIO.setup(pwm_motor1_pin, GPIO.OUT)
+    GPIO.setup(pwm_motor2_pin, GPIO.OUT)
+    GPIO.output(pwm_motor1_pin, False)
+    GPIO.output(pwm_motor2_pin, False)
+
+
 
 
