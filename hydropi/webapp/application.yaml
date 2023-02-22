@@ -1,6 +1,6 @@
 identity:
-    appId: <enter_any_unique_name_here> 
+    appId: hydropiapp 
 auth:
-    key: <enter_cloud_foundry_app_key_here>
-    token: <enter_cloud_foundry_app_token_here>
+    key: a-0085s0-nzregrhgbb 
+    token: FxSf62r3*)T-Tt@u&@ 
 

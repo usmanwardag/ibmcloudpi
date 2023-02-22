@@ -53,8 +53,20 @@
 <body>
     <div class="container" id="container">
         <h1 data-i18n="welcome"></h1> <!- Welcome ->
-	<form action="/light/on" method="POST"> <input type="submit" value="Turn Light On"> </form><br>
-	<form action="/light/off" method="POST"> <input type="submit" value="Turn Light Off"> </form>
+        <!--><form action="/light/on" method="POST"> <input type="submit" value="Turn Light On"> </form><br>
+        <form action="/light/off" method="POST"> <input type="submit"
+        value="Turn Light Off"> </form>-->
+
+  <form method="POST">
+    <p> Lower pH Threshold: </p>
+    <input name="text">
+    <br><br><br>
+    <p> Upper pH Threshold: </p>
+    <input name="text1">
+    <br><br><br>
+    <input type="submit" value="Adjust pH">
+  </form>
+
     </div>
 </body>
 

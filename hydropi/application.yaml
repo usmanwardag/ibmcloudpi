@@ -1,6 +1,0 @@
-identity:
-    appId: <enter_unique_name_here> 
-auth:
-    key: <enter_key_associated_with_device_here>
-    token: <enter_device_token_here>
-

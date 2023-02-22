@@ -1,5 +1,5 @@
 ---
 applications:
- - name: <enter_app_name_from_ibmcloud_here> 
+ - name: cscapp 
    random-route: true
    memory: 128M

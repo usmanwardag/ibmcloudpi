@@ -12,6 +12,7 @@ try:
     options = wiotp.sdk.application.parseConfigFile("application.yaml")
     client = wiotp.sdk.application.ApplicationClient(config=options)
     client.connect()
+    pass
 except Exception as e:
     print(e)
 
@@ -28,10 +29,20 @@ def light_route(command):
     client.publishEvent(typeId="RaspberryPi", deviceId="1", eventId="light", msgFormat="json", data=eventData)
     return redirect("/", code=302)
 
+@app.route('/', methods=['POST'])
+def my_form_post():
+    text = request.form['text']
+    text1 = request.form['text1']
+    eventData = {'low_ph' : text, 'high_ph': text1}
+    client.publishEvent(typeId="RaspberryPi", deviceId="1", eventId="ph", msgFormat="json", data=eventData)
+    processed_text = text.upper()
+    return f"Sent instructions to Raspberry Pi to adjust pH (lower bound:{text}, upper bound: {text1})" 
+
 @atexit.register
 def shutdown():
     if client:
         client.disconnect()
+    pass
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=port, debug=True)
