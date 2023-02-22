@@ -91,12 +91,11 @@ Edit the `manifest.yml` file:
 Deploy with the following steps:
 
 ```
-ibmcloud login
+cf login
 ```
 Enter your username and password when prompted.
 ```
-ibmcloud target --cf
-ibmcloud cf push
+cf push
 ```
 
 If the code runs successfully, you should get a link to the web app, which you can run on browser.
