@@ -63,18 +63,20 @@ https://console.developers.google.com/apis/api/serviceusage.googleapis.com/
 ```
 gcloud beta billing projects describe cscpiproject
 ```
-- Enable the Cloud Build api.
+- Enable the Cloud Build api
 ```
 https://console.cloud.google.com/flows/enableapi?apiid=cloudbuild.googleapis.com
 ```
-- Finally, enable the app engine.
+- Finally, enable the app engine
 ```
 gcloud app create
 ```
 
-## Run client app on Pi
+# 3. Run
 
-First, switch to the Pi code and install wiotp-sdk.
+## 3a. Run client app on Pi
+
+First, switch to the Pi code and install wiotp-sdk. On your Raspberry Pi:
  ```
 cd pi
 pip3 install wiotp-sdk
@@ -92,11 +94,11 @@ python code.py
  
 You are good to go if the code doesn't return any errors.
  
-## Prepare web app code
+## 3b. Deploy Web App on Google Cloud
 
-First, switch to the webapp code.
+Switch to the webapp code.
  ```
-cd webapp
+cd webapp_gcp
  ```   
 
 Edit the `application.yaml` file.
@@ -105,21 +107,7 @@ Edit the `application.yaml` file.
 - Copy API Key from step A above.
 - Copy Auth Token from step A above.
 
-Edit the `manifest.yml` file:
-
-- Copy name from step B above.
-
-## Deploy web app
-
-Deploy with the following steps:
-
-```
-cf login
-```
-Enter your username and password when prompted.
-```
-cf push
-```
+Deploy the app using `gcloud app deploy`.
 
 If the code runs successfully, you should get a link to the web app, which you can run on browser.
 
