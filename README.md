@@ -44,6 +44,33 @@ There are two parts of the setup. First, we will set up the IOT Foundation servi
 - Note down the API Key and Authentication Token **(step A)**
 
 ## 2b. Hosting Web App on Google Cloud
+- Install the [Google Cloud CLI](https://cloud.google.com/sdk/docs/install)
+- From your PC shell, log-in to `gcloud`
+```
+gcloud auth login
+```
+- Head over to `cloud.google.com` and accept *Terms of Service*
+- Activate the 90 days trial (offered as of April 6, 2023)
+- Initialize the gcloud project
+```
+gcloud init
+```
+- Next, we will enable several apis. Start with enabling the service usage api
+```
+https://console.developers.google.com/apis/api/serviceusage.googleapis.com/
+```
+- Verify that billing is enabled by running this command. In case it is enabled, the `billingEnabled` parameter will be `True`. The billing is automatically enabled by default once you activate your trial.
+```
+gcloud beta billing projects describe cscpiproject
+```
+- Enable the Cloud Build api.
+```
+https://console.cloud.google.com/flows/enableapi?apiid=cloudbuild.googleapis.com
+```
+- Finally, enable the app engine.
+```
+gcloud app create
+```
 
 ## Run client app on Pi
 
