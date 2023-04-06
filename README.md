@@ -1,26 +1,29 @@
-## Adapted From
-https://github.com/IBM-Cloud/get-started-python
 
-## Pre-requisites
+# 1. Starting Out
+
+## 1a. Pre-requisites
 You'll need the following:
 * [IBM Cloud account](https://console.ng.bluemix.net/registration/)
-* [Cloud Foundry CLI](https://github.com/cloudfoundry/cli#downloads)
-* [IBM Cloud CLI](https://cloud.ibm.com/docs/cli?topic=cli-install-ibmcloud-cli)
+* [Google Cloud account](https://cloud.google.com/)
+* [Google Cloud CLI](https://cloud.google.com/sdk/docs/install)
 * [Git](https://git-scm.com/downloads)
 * [Python](https://www.python.org/downloads/)
 
-## Clone the repository
+## 1b. Clone the repository
 
-First, clone the repository on your pi, so that you can run an application client that can listen to instructions from the web to turn the light ON or OFF.
+First, clone the repository on your Raspberry pi, so that you can run an application client that can listen to instructions from the web app to turn the light ON or OFF.
  ```
 git clone https://github.com/usmanwardag/ibmcloudpi/
  ```
+ 
+Next, run the same cloning command on your PC. There, we will develop the web app and deploy it onto the Google cloud.
 
-Next, run the same cloning command on your PC. There, we will develop the web app and deploy it onto the IBM cloud.
+# 2. Setup
 
-## Web App Setup
+There are two parts of the setup. First, we will set up the IOT Foundation service on IBM Cloud, which will allow the Raspberry Pi and our web app to communicate with each other through the MQTT protocol. Second, we will deploy the web app on Google Cloud.
 
-To ready the web app setup, we first need to head over to the IBM cloud to create the app. 
+## 2a. IOT Foundation Service
+
 - Head over to [cloud.ibm.com](https://cloud.ibm.com/)
 - Select "Create Resource" and search for "Internet of Things Platform"
 - Keep and default settings and select "Create"
@@ -40,14 +43,7 @@ To ready the web app setup, we first need to head over to the IBM cloud to creat
 - Click "Generate Key"
 - Note down the API Key and Authentication Token **(step A)**
 
-Finally:
-- Got back to [cloud.ibm.com](https://cloud.ibm.com/)
-- From the top left menu, select [Cloud Foundry](https://cloud.ibm.com/cloudfoundry/overview)
-- Select a Python runtime application under "Application Runtimes"
-- Enter a unique name such as "csc543" (make sure there are no spaces) **(step B)**
-- Hit "Create"
-
-The web app setup is now ready. 
+## 2b. Hosting Web App on Google Cloud
 
 ## Run client app on Pi
 
