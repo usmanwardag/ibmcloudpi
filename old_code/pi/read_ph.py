@@ -24,16 +24,23 @@ adc = Adafruit_ADS1x15.ADS1115()
 # See table 3 in the ADS1015/ADS1115 datasheet for more info on gain.
 GAIN = 2/3
 
+# Calibrations
+# (x1, y1) -> Calibration pair 1
+#   x1 -> ADC value, y1 -> Corresponding pH
+# (x2, y2) -> Calibration pair 2
+#   x2 -> ADC value, y2 -> Corresponding pH
 x1, y1 = 0.198, 7
 x2, y2 = 0.173, 8.25
 
 
-slope = (y2 - y1) / (x2 - x1)
-intercept = y1 - (slope * x1)
-
 def convert_ph(adc_value):
+    """ Given an adc value, get corresponding pH """
+    # Calculate Slope and Intercept
+    slope = (y2 - y1) / (x2 - x1)
+    intercept = y1 - (slope * x1)
     ph = (slope * adc_value) + intercept
     return ph
+
 
 def get_ph():
 
@@ -48,3 +55,10 @@ def get_ph():
     ph = convert_ph(ph_adc)
 
     return ph_adc, ph
+
+
+if __name__ == '__main__':
+    while True:
+        _, pH = get_ph()
+        print(f'Current pH: {pH}')
+        time.sleep(0.5)
