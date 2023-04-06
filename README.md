@@ -11,7 +11,7 @@ You'll need the following:
 
 ## 1b. Clone the repository
 
-First, clone the repository on your Raspberry pi, so that you can run an application client that can listen to instructions from the web app to turn the light ON or OFF.
+First, clone the repository on your Raspberry pi, so that you can run the application client that can listen to instructions from the web app to turn the light ON or OFF.
  ```
 git clone https://github.com/usmanwardag/ibmcloudpi/
  ```
