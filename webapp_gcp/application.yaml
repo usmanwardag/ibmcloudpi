@@ -1,0 +1,6 @@
+identity:
+    appId: <enter-unique-name-here>
+auth:
+    key: <enter-iot-service-device-key-here>
+    token: <enter-iot-service-device-token-here>
+

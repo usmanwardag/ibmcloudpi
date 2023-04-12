@@ -1,26 +1,29 @@
-## Adapted From
-https://github.com/IBM-Cloud/get-started-python
 
-## Pre-requisites
+# 1. Starting Out
+
+## 1a. Pre-requisites
 You'll need the following:
 * [IBM Cloud account](https://console.ng.bluemix.net/registration/)
-* [Cloud Foundry CLI](https://github.com/cloudfoundry/cli#downloads)
-* [IBM Cloud CLI](https://cloud.ibm.com/docs/cli?topic=cli-install-ibmcloud-cli)
+* [Google Cloud account](https://cloud.google.com/)
+* [Google Cloud CLI](https://cloud.google.com/sdk/docs/install)
 * [Git](https://git-scm.com/downloads)
 * [Python](https://www.python.org/downloads/)
 
-## Clone the repository
+## 1b. Clone the repository
 
-First, clone the repository on your pi, so that you can run an application client that can listen to instructions from the web to turn the light ON or OFF.
+First, clone the repository on your Raspberry pi, so that you can run the application client that can listen to instructions from the web app to turn the light ON or OFF.
  ```
 git clone https://github.com/usmanwardag/ibmcloudpi/
  ```
+ 
+Next, run the same cloning command on your PC. There, we will develop the web app and deploy it onto the Google cloud.
 
-Next, run the same cloning command on your PC. There, we will develop the web app and deploy it onto the IBM cloud.
+# 2. Setup
 
-## Web App Setup
+There are two parts of the setup. First, we will set up the IOT Foundation service on IBM Cloud, which will allow the Raspberry Pi and our web app to communicate with each other through the MQTT protocol. Second, we will deploy the web app on Google Cloud.
 
-To ready the web app setup, we first need to head over to the IBM cloud to create the app. 
+## 2a. IOT Foundation Service
+
 - Head over to [cloud.ibm.com](https://cloud.ibm.com/)
 - Select "Create Resource" and search for "Internet of Things Platform"
 - Keep and default settings and select "Create"
@@ -40,18 +43,40 @@ To ready the web app setup, we first need to head over to the IBM cloud to creat
 - Click "Generate Key"
 - Note down the API Key and Authentication Token **(step A)**
 
-Finally:
-- Got back to [cloud.ibm.com](https://cloud.ibm.com/)
-- From the top left menu, select [Cloud Foundry](https://cloud.ibm.com/cloudfoundry/overview)
-- Select a Python runtime application under "Application Runtimes"
-- Enter a unique name such as "csc543" (make sure there are no spaces) **(step B)**
-- Hit "Create"
+## 2b. Hosting Web App on Google Cloud
+- Install the [Google Cloud CLI](https://cloud.google.com/sdk/docs/install)
+- From your PC shell, log-in to `gcloud`
+```
+gcloud auth login
+```
+- Head over to `cloud.google.com` and accept *Terms of Service*
+- Activate the 90 days trial (offered as of April 6, 2023)
+- Initialize the gcloud project
+```
+gcloud init
+```
+- Next, we will enable several apis. Start with enabling the service usage api
+```
+https://console.developers.google.com/apis/api/serviceusage.googleapis.com/
+```
+- Verify that billing is enabled by running this command. In case it is enabled, the `billingEnabled` parameter will be `True`. The billing is automatically enabled by default once you activate your trial.
+```
+gcloud beta billing projects describe cscpiproject
+```
+- Enable the Cloud Build api
+```
+https://console.cloud.google.com/flows/enableapi?apiid=cloudbuild.googleapis.com
+```
+- Finally, enable the app engine
+```
+gcloud app create
+```
 
-The web app setup is now ready. 
+# 3. Run
 
-## Run client app on Pi
+## 3a. Run client app on Pi
 
-First, switch to the Pi code and install wiotp-sdk.
+First, switch to the Pi code and install wiotp-sdk. On your Raspberry Pi:
  ```
 cd pi
 pip3 install wiotp-sdk
@@ -69,11 +94,11 @@ python code.py
  
 You are good to go if the code doesn't return any errors.
  
-## Prepare web app code
+## 3b. Deploy Web App on Google Cloud
 
-First, switch to the webapp code.
+Switch to the webapp code.
  ```
-cd webapp
+cd webapp_gcp
  ```   
 
 Edit the `application.yaml` file.
@@ -82,21 +107,7 @@ Edit the `application.yaml` file.
 - Copy API Key from step A above.
 - Copy Auth Token from step A above.
 
-Edit the `manifest.yml` file:
-
-- Copy name from step B above.
-
-## Deploy web app
-
-Deploy with the following steps:
-
-```
-cf login
-```
-Enter your username and password when prompted.
-```
-cf push
-```
+Deploy the app using `gcloud app deploy`.
 
 If the code runs successfully, you should get a link to the web app, which you can run on browser.
 

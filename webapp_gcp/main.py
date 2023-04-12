@@ -6,14 +6,10 @@ import json
 import wiotp.sdk.application
 
 app = Flask(__name__, static_url_path='')
-client = None
 
-try:
-    options = wiotp.sdk.application.parseConfigFile("application.yaml")
-    client = wiotp.sdk.application.ApplicationClient(config=options)
-    client.connect()
-except Exception as e:
-    print(e)
+options = wiotp.sdk.application.parseConfigFile("application.yaml")
+client = wiotp.sdk.application.ApplicationClient(config=options)
+client.connect()
 
 port = int(os.getenv('PORT', 8000))
 
@@ -34,4 +30,4 @@ def shutdown():
         client.disconnect()
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=port, debug=True)
+    app.run(host='0.0.0.0', port=8080, debug=True)
