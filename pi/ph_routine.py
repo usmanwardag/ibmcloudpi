@@ -1,14 +1,16 @@
 import ast
 import json
 import wiotp.sdk.application
-from motors import adjust_ph 
+from motors import adjust_ph
 from read_ph import get_ph
+
 
 def phUpdateCallback(evt):
     payload = ast.literal_eval(json.dumps(evt.data))
     ph_low = payload["low_ph"]
     ph_high = payload["high_ph"]
-    print(f'pH update received from webapp. pH low: {ph_low}, pH high: {ph_high}')
+    print(
+        f'pH update received from webapp. pH low: {ph_low}, pH high: {ph_high}')
 
     with open("config.json") as f:
         config = json.load(f)
@@ -25,6 +27,7 @@ def phUpdateCallback(evt):
         print('Motor not currently running. Starting the motor.')
         adjust_ph()
 
+
 try:
     options = wiotp.sdk.application.parseConfigFile("application.yaml")
     client = wiotp.sdk.application.ApplicationClient(config=options)
@@ -37,5 +40,3 @@ try:
 
 except Exception as e:
     print("Exception: ", e)
-
-
